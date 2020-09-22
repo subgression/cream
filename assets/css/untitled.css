@@ -1,0 +1,12 @@
+.btn.btn-primary.btn-xl.js-scroll-trigger {
+  line-height: 6px;
+}
+
+.navbar.navbar-light.navbar-expand-md {
+  background-color: rgba(33,33,33,0.75);
+}
+
+.navbar-light .navbar-nav .nav-link {
+  color: #495057 !important;
+  border-bottom: 2px solid white;
+}

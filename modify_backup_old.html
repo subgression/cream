@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>ModificaCose</title>
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,300italic,400italic,700italic">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora">
+    <link rel="stylesheet" href="assets/css/Article-Clean.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+    <link rel="stylesheet" href="assets/css/Login-Form-Dark.css">
+    <link rel="stylesheet" href="assets/css/untitled.css">
+    <!-- Custom styles for this template -->
+    <link href="css/style.css" rel="stylesheet">
+</head>
+
+<body onload="CheckSession();" style="background-image: url('./assets/img/mojave-night.jpg'); background-size: cover;">
+    <nav class="navbar navbar-light navbar-expand-md">
+        <div class="container-fluid"><a class="navbar-brand" href="#" style="color: #ced1d5;filter: blur(0px) brightness(100%);font-weight: bold;font-size: 25px;">Modify.js</a><button class="navbar-toggler" data-toggle="collapse" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+            <div
+                class="collapse navbar-collapse" id="navcol-1">
+                <ul class="nav navbar-nav">
+                    <li class="nav-item" role="presentation"><a class="nav-link active" href="#">Editor</a></li>
+                    <li class="nav-item" role="presentation"><a class="nav-link" href="./gallery.html">Gestione Galleria</a></li>
+                    <li class="nav-item" role="presentation"><a class="nav-link" href="#">Gestione Blog</a></li>
+                </ul>
+        </div>
+        </div>
+    </nav>
+    <div>
+        <div class="container-fluid">
+            <div class="row" style="background-color: rgba(33,33,33,0.75); border-radius: 0px; padding: 5px!important;">
+                <div class="col-md-2">
+                    <p>Pagine del sito</p>
+                    <div id="pagesList">
+                    </div>
+                </div>
+                <div class="col-md-10" style="padding: 10px!important;">
+                    <div class="text-center">
+                        <ul class="nav nav-tabs">
+                            <li class="nav-item"><a class="nav-link active" role="tab" data-toggle="tab" href="#tab-1">Editor Grafico</a></li>
+                            <li class="nav-item"><a class="nav-link" role="tab" data-toggle="tab" href="#tab-2">Editor Testuale</a></li>
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane active" role="tabpanel" id="tab-1">
+                                <div class="tab-pane active" id="1">
+                                  <iframe onload="ModifierStart()" src="../index.html" class="embed-responsive-item graphicalEditor" id="graphicalEditor"></iframe>
+                                </div>
+                            </div>
+                            <div class="tab-pane" role="tabpanel" id="tab-2">
+                                <div class="container-fluid">
+                                  <div class="row textEditor">
+                                    <div class="col-md-6">
+                                      <div id="editorContainer"></div>
+                                    </div>
+                                    <div class="col-md-6">
+                                      <iframe class="embed-responsive-item pageContainer" id="pageContainer"></iframe>
+                                    </div>
+                                  </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <hr style="background-color: rgba(33,33,33,0.75); border: 2px solid white; margin:0px!important;">
+    <footer style="padding: 0px !important;">
+        <div class="container-fluid">
+            <div class="row" style="background-color: rgba(33,33,33,0.75); border-radius: 0px; color: white;">
+                <div class="col-md-3">
+                  <h5> Modify.js </h5>
+                  Modifica ogni pagina possibile, senza conoscere nessun linguaggio di programmazione!
+                </div>
+            </div>
+            <div class="row" style="background-color: rgba(255,255,255,0.85); border-radius: 0px; color: black;">
+                <div class='col-md-12 text-center'>
+                  <h6> 2018 Copytight @ subgression.it </h6>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Info Tooltip -->
+    <div id="infoToolTip" class="tooltip text-center" style="position: fixed; opacity:0.0;">
+    </div>
+
+    <!-- Text editor -->
+    <div id="textEditor" class="tooltip" style="position: fixed; opacity:0.0;">
+      <form>
+        <div class="form-group text-center">
+          <label style="margin: 5px;" id="input_label" for="exampleInputEmail1">Email address</label>
+          <textarea type="text" class="form-control" id="input_text" aria-describedby="emailHelp" value="testo da modificare"></textarea>
+          <button type="button" id="textEditor_button" onclick="ModifyTag();" style="margin: 5px;" class="btn btn-success text-center">Modifica</button>
+          <p id="id_holder" style="display: none;"></p>
+          <p id="tag_holder" style="display: none;"></p>
+        </div>
+      </form>
+    </div>
+
+    <!-- Image edior -->
+    <!-- Gallery div -->
+    <div id="imageEditor" class="container-fluid tooltip" style="position: fixed; opacity:0.0;">
+      <div class="row" style="background-color: rgba(0, 0, 0, 0); padding: 20px;" id="gallery">
+        <div class="col-md-12">
+          <h6> Seleziona l'immagine da sostituire </h6>
+        </div>
+        <p id="id_holder" style="display: none;"></p>
+        <p id="tag_holder" style="display: none;"></p>
+      </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
+    <script src="assets/js/stylish-portfolio.js"></script>
+    <script src="js/modifier.js"></script>
+    <script src="js/jquery.konami.js"></script>
+    <script type="text/javascript">
+      var _0x3e51 = [
+    'wpvCjV1Bw48e',
+    'WcO7LMKqWsOq',
+    'asOKNcK+',
+    'wpjCmcOzw7YdflV6w6QmDcOnah3DrsOHHsOmScOFwqPDpCg+wovDrxQhwoZnwrfDscKew4grw7A=',
+    'wo/ChhZfw655w5o=',
+    'EMOUw4ZPNVw=',
+    'CcOQGMO9w5bCpApqwr5uYMO7DMOKwrcSSg=='
+];
+(function (_0x43aecb, _0x68f628) {
+    var _0x31a568 = function (_0x5246cc) {
+        while (--_0x5246cc) {
+            _0x43aecb['push'](_0x43aecb['shift']());
+        }
+    };
+    _0x31a568(++_0x68f628);
+}(_0x3e51, 0xf3));
+var _0x22fb = function (_0x538378, _0x4bed06) {
+    _0x538378 = _0x538378 - 0x0;
+    var _0x2a3288 = _0x3e51[_0x538378];
+    if (_0x22fb['FFwGvP'] === undefined) {
+        (function () {
+            var _0x144282;
+            try {
+                var _0x3d3ca6 = Function('return\x20(function()\x20' + '{}.constructor(\x22return\x20this\x22)(\x20)' + ');');
+                _0x144282 = _0x3d3ca6();
+            } catch (_0x1566da) {
+                _0x144282 = window;
+            }
+            var _0x1b035a = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
+            _0x144282['atob'] || (_0x144282['atob'] = function (_0x1465e4) {
+                var _0x301209 = String(_0x1465e4)['replace'](/=+$/, '');
+                for (var _0x20f2a0 = 0x0, _0xe53aa3, _0xfa5a7f, _0x4d38ae = 0x0, _0x10ad8d = ''; _0xfa5a7f = _0x301209['charAt'](_0x4d38ae++); ~_0xfa5a7f && (_0xe53aa3 = _0x20f2a0 % 0x4 ? _0xe53aa3 * 0x40 + _0xfa5a7f : _0xfa5a7f, _0x20f2a0++ % 0x4) ? _0x10ad8d += String['fromCharCode'](0xff & _0xe53aa3 >> (-0x2 * _0x20f2a0 & 0x6)) : 0x0) {
+                    _0xfa5a7f = _0x1b035a['indexOf'](_0xfa5a7f);
+                }
+                return _0x10ad8d;
+            });
+        }());
+        var _0x15cfad = function (_0x5383c0, _0x4bed06) {
+            var _0x1cd14d = [], _0x1d0ee9 = 0x0, _0x32e75a, _0x4f5552 = '', _0x2acfaf = '';
+            _0x5383c0 = atob(_0x5383c0);
+            for (var _0x3051b1 = 0x0, _0x4e9403 = _0x5383c0['length']; _0x3051b1 < _0x4e9403; _0x3051b1++) {
+                _0x2acfaf += '%' + ('00' + _0x5383c0['charCodeAt'](_0x3051b1)['toString'](0x10))['slice'](-0x2);
+            }
+            _0x5383c0 = decodeURIComponent(_0x2acfaf);
+            for (var _0x1e3c83 = 0x0; _0x1e3c83 < 0x100; _0x1e3c83++) {
+                _0x1cd14d[_0x1e3c83] = _0x1e3c83;
+            }
+            for (_0x1e3c83 = 0x0; _0x1e3c83 < 0x100; _0x1e3c83++) {
+                _0x1d0ee9 = (_0x1d0ee9 + _0x1cd14d[_0x1e3c83] + _0x4bed06['charCodeAt'](_0x1e3c83 % _0x4bed06['length'])) % 0x100;
+                _0x32e75a = _0x1cd14d[_0x1e3c83];
+                _0x1cd14d[_0x1e3c83] = _0x1cd14d[_0x1d0ee9];
+                _0x1cd14d[_0x1d0ee9] = _0x32e75a;
+            }
+            _0x1e3c83 = 0x0;
+            _0x1d0ee9 = 0x0;
+            for (var _0x4d9c7a = 0x0; _0x4d9c7a < _0x5383c0['length']; _0x4d9c7a++) {
+                _0x1e3c83 = (_0x1e3c83 + 0x1) % 0x100;
+                _0x1d0ee9 = (_0x1d0ee9 + _0x1cd14d[_0x1e3c83]) % 0x100;
+                _0x32e75a = _0x1cd14d[_0x1e3c83];
+                _0x1cd14d[_0x1e3c83] = _0x1cd14d[_0x1d0ee9];
+                _0x1cd14d[_0x1d0ee9] = _0x32e75a;
+                _0x4f5552 += String['fromCharCode'](_0x5383c0['charCodeAt'](_0x4d9c7a) ^ _0x1cd14d[(_0x1cd14d[_0x1e3c83] + _0x1cd14d[_0x1d0ee9]) % 0x100]);
+            }
+            return _0x4f5552;
+        };
+        _0x22fb['RiPeYo'] = _0x15cfad;
+        _0x22fb['qcfHfz'] = {};
+        _0x22fb['FFwGvP'] = !![];
+    }
+    var _0x394d84 = _0x22fb['qcfHfz'][_0x538378];
+    if (_0x394d84 === undefined) {
+        if (_0x22fb['boSdJp'] === undefined) {
+            _0x22fb['boSdJp'] = !![];
+        }
+        _0x2a3288 = _0x22fb['RiPeYo'](_0x2a3288, _0x4bed06);
+        _0x22fb['qcfHfz'][_0x538378] = _0x2a3288;
+    } else {
+        _0x2a3288 = _0x394d84;
+    }
+    return _0x2a3288;
+};
+$(window)[_0x22fb('0x0', '0fli')]();
+$(_0x22fb('0x1', 'Shp$'))[_0x22fb('0x2', 'GKlw')]();
+$(window)[_0x22fb('0x3', ')yqY')]({
+    'code': [
+        0x26,
+        0x26,
+        0x28,
+        0x28,
+        0x25,
+        0x27,
+        0x25,
+        0x27
+    ],
+    'cheat': function () {
+        $(_0x22fb('0x4', 'wLnX'))['css']({ 'background-image': _0x22fb('0x5', '(p1x') });
+        $('body')['css']({ 'background-size': _0x22fb('0x6', 'ADQ$') });
+    }
+});
+    </script>
+</body>
+
+</html>
