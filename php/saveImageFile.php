@@ -3,7 +3,7 @@
     echo "Saving creamText with ID: " .$_POST['id'];
     $id = $_POST['id'];
     $value = $_POST['val'];
-    $idFile = fopen("../CreamImage/" . $id, "w");
+    $idFile = fopen("../creamimage/" . $id, "w");
     fwrite($idFile, $value);
     fclose($idFile);
   }

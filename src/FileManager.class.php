@@ -13,9 +13,10 @@
     */
     public function GetHtmlFiles()
     {
+      echo "Getting HTML files...";
       $files = array();
 
-      foreach (glob("../*.*") as $filename) {
+      foreach (glob("../../*.*") as $filename) {
         //Taking the last part only
         $exploded = explode("/", $filename);
         $filename = end($exploded);
@@ -57,7 +58,7 @@
     */
     public function CheckTextFileById($id)
     {
-        $textfiles = scandir("./Cream/CreamText", 1);
+        $textfiles = scandir("./cream/creamtext", 1);
         foreach ($textfiles as $textfile) {
             if ($textfile == $id) return true;
         }
@@ -72,7 +73,7 @@
     */
     public function CheckImageFileById($id)
     {
-        $textfiles = scandir("./Cream/CreamImage", 1);
+        $textfiles = scandir("./cream/creamimage", 1);
         foreach ($textfiles as $textfile) {
             if ($textfile == $id) return true;
         }
@@ -88,7 +89,7 @@
     */
     public function SaveTextFileById($id, $value)
     {
-        $idFile = fopen("./Cream/CreamText/" . $id, "w");
+        $idFile = fopen("./cream/creamtext/" . $id, "w");
         fwrite($idFile, $value);
     }
 
@@ -101,7 +102,7 @@
     */
     public function SaveImageFileById($id, $value)
     {
-        $idFile = fopen("./Cream/CreamImage/" . $id, "w");
+        $idFile = fopen("./cream/creamimage/" . $id, "w");
         fwrite($idFile, $value);
     }
 
@@ -114,7 +115,7 @@
     */
     public function GetTextFileById($id)
     {
-        $idFileDir = "./Cream/CreamText/" . $id;
+        $idFileDir = "./cream/creamtext/" . $id;
         return file_get_contents($idFileDir);
     }
 
@@ -127,7 +128,7 @@
     */
     public function GetImageFileById($id)
     {
-        $idFileDir = "./Cream/CreamImage/" . $id;
+        $idFileDir = "./cream/creamimage/" . $id;
         return file_get_contents($idFileDir);
     }
   }

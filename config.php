@@ -1,3 +1,3 @@
 <?php
-  define("IMG_FILES", "../../assets/img/")
+  define("IMG_FILES", "../../img/products/")
 ?>
