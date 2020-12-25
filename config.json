@@ -1,0 +1,24 @@
+{
+    "creamImageFiles": [
+        {
+            "name" : "Pagina Iniziale",
+            "path" : "../img/"
+        },
+        {
+            "name" : "Prodotti",
+            "path" : "../img/products/"
+        },
+        {
+            "name" : "Macchine",
+            "path" : "../img/machines/"
+        },
+        {
+            "name" : "Bubbles",
+            "path" : "../img/bubbles/"
+        },
+        {
+            "name" : "Test Upload",
+            "path" : "../img/test/"
+        }
+    ]
+}

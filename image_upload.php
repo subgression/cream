@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 <?php
-    include "src/CreamLoader.php";
-    cream_loader();
+include "src/CreamLoader.php";
+error_reporting(E_ALL);
+ini_set('display_errors', 'on');
+cream_loader();
 ?>
 <?php  ?>
 <html>
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -29,14 +32,32 @@
                         <i class="fas fa-align-left"></i>
                         <span>Toggle Sidebar</span>
                     </button>
-                    <p class="page-indicator">Home</p>
+                    <p class="page-indicator">Gallery</p>
+
+
                 </div>
             </nav>
+
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12 text-center" style="display: flex; justify-content: center; align-item: center;">
+                        <?php cream_render_img_upload(); ?>
+                    </div>
+                    
+                </div>
+            </div>
         </div>
     </div>
 
+
     <?php cream_render_footer(); ?>
     <?php cream_import_scripts(); ?>
+
+    <script>
+        window.onload = function() {
+            GetImages();
+        }
+    </script>
 </body>
 
 </html>

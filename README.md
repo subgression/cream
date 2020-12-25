@@ -21,6 +21,10 @@ When doing a project, most of the work is editing small part of content, such as
 
 # How To Use
 Cream is created to be as simple as possible, no unnecessary and complex backend to handle content!
+Each page that use the Cream needs the following requirements:
+```php
+<?php require "./cream/src/Cream.class.php"; ?>
+```
 ## Text
 Simply replace any of the tag you need to allow edit from:
 ```html
@@ -39,3 +43,19 @@ with:
 ```php
 <img data-cream-type="image" data-cream-name="your-id" src=<?php $Cream->Image("your_id", "your_src"); ?> />
 ```
+# Changelog
+## V0.1.0
+- Initial commit
+- Somewhat functioning cream basic script
+## V0.2.0
+- Updated UI
+- Better frontend managmente using functions
+- Bugfixing and performance improvements
+## V0.2.1
+- Added a function to reset content to defaults
+## V0.2.2
+- Added a really poor login system (@todo: Make a new one, avoiding sending password in clear)
+## V0.2.3
+- Added config.json, where the user can config paths to image folders
+- Created Video Gallery Section
+- Added an Image Upload Section

@@ -1,16 +1,44 @@
+/**
+ * Cream Frontend System
+ */
+
+// Goes to login
+/**
+ * @todo: Completely redo login system
+ */
+function Login() {
+  var user = document.getElementById('inputUser').value;
+  var password = document.getElementById('inputPassword').value;
+  $.post("./api/login.php", {
+    user: user,
+    password: password
+  }, function (data) {
+    console.log(data);
+    if (data == 1) window.location = "./index.php";
+    console.error("Wrong user and password!");
+  });
+}
+
+// Goes to Logout
+function Logout() {
+  $.post("./api/logout.php", {}, function (data) {
+    window.location = "../"
+  });
+}
+
 //The current edited cream image
 let currentCreamImage = null;
 
 function CreamStart() {
-    console.log("Cream v0.2 PHP Edition Starting");
+  console.log("Cream v0.2 PHP Edition Starting");
 
-    var creamTags = $("#graphicalEditor").contents().find('*[data-cream-type]');
+  var creamTags = $("#graphicalEditor").contents().find('*[data-cream-type]');
 
-    console.log("Number of Cream Tags found: " + creamTags.length);
+  console.log("Number of Cream Tags found: " + creamTags.length);
 
-    for (var i = 0; i < creamTags.length; i++) {
-        AddOverlay(creamTags[i]);
-    }
+  for (var i = 0; i < creamTags.length; i++) {
+    AddOverlay(creamTags[i]);
+  }
 }
 
 //Adds the overlay features on a modificable tag
@@ -19,22 +47,22 @@ function AddOverlay(tag) {
   $(tag).css("border-radius", "10px");
   //Enabling transitions on this tag
   $(tag).css({
-      WebkitTransition : 'border 0.2s ease-in-out',
-      MozTransition    : 'border 0.2s ease-in-out',
-      MsTransition     : 'border 0.2s ease-in-out',
-      OTransition      : 'border 0.2s ease-in-out',
-      transition       : 'border 0.2s ease-in-out'
+    WebkitTransition: 'border 0.2s ease-in-out',
+    MozTransition: 'border 0.2s ease-in-out',
+    MsTransition: 'border 0.2s ease-in-out',
+    OTransition: 'border 0.2s ease-in-out',
+    transition: 'border 0.2s ease-in-out'
   });
   //Adding mouseover event handler
-  $(tag).on("mouseenter", function(event){
+  $(tag).on("mouseenter", function (event) {
     HandleMouseEnter(tag, event);
   });
   //Adding mouseleave event handler
-  $(tag).on("mouseleave", function(event){
+  $(tag).on("mouseleave", function (event) {
     HandleMouseLeave(tag, event);
   });
   //Adding mouse click event handler
-  $(tag).click(function(event){
+  $(tag).click(function (event) {
     HandleClick(tag, event);
   });
 }
@@ -78,10 +106,14 @@ function HandleClick(tag, event) {
     //Spawning the image gallery
     console.log("Editing immagine");
     currentCreamImage = tag;
-    $("#gallery").animate({height: "100%"}, 500, function() {
+    $("#gallery").animate({
+      height: "100%"
+    }, 500, function () {
       $("#gallery-box").text("");
       $("#current-image").attr('src', $(tag).attr('src'));
-      $("#loading_spinner").css({'display':'inherit'});
+      $("#loading_spinner").css({
+        'display': 'inherit'
+      });
       GetImages();
     });
   }
@@ -93,17 +125,33 @@ function HandleClick(tag, event) {
 */
 function GetImages() {
   console.log("Ottengo immagini");
-  $.post('./php/get_images.php', {}, function(data){
+  $.post('./api/get_images.php', {}, function (data) {
     var parsed = JSON.parse(data);
     console.log(parsed);
-    for (var i = 0; i < parsed.length; i++)  {
-      $("#gallery-box").append("<div class='col-md-3'>" +
-      "<img onclick='SelectImage(this);' src='" + parsed[i] + "' class='img-fluid'></img>" +
-      "</div>");
+    for (var i = 0; i < parsed.length; i++) {
+      $("#gallery-box").append("<div class='col-md-3 col-lg-2 mb-5'>" +
+        "<img onclick='SelectImage(this);' src='" + parsed[i] + "' class='img img-fluid'></img>" +
+        "</div>");
     }
-  }).done(function() {
-    $("#loading_spinner").css({'display':'none'});
+  }).done(function () {
+    $("#loading_spinner").css({
+      'display': 'none'
+    });
   });
+}
+
+/**
+ * Upload an Image inside Cream storage 
+ * @param {*} imageID The image ID
+ * @param {string} nameID The name ID of the image name
+ */
+async function UploadImage(imageID, nameID) {
+  let image = docuemnt.getElementById(imageID).files[0];
+  let name = doucmente.getElementById(name).innerHTML;
+  let formData = new FormData();
+
+  formData.append("image", image);
+  await fetch('./api/upload_image.php', {method: "POST", body: formData});
 }
 
 /**
@@ -123,8 +171,11 @@ function SelectImage(img) {
 function SaveImage() {
   let _id = currentCreamImage.dataset.creamName;
   let src = $("#current-image").attr('src');
-  
-  $.post("./php/saveImageFile.php", {id: _id, val: src}, function(data) {
+
+  $.post("./api/saveImageFile.php", {
+    id: _id,
+    val: src
+  }, function (data) {
     console.log(data);
   });
   CloseGallery();
@@ -134,8 +185,9 @@ function SaveImage() {
   Closes the gallery
 */
 function CloseGallery() {
-  $("#gallery").animate({height: "0%"}, 500, function() {
-  });
+  $("#gallery").animate({
+    height: "0%"
+  }, 500, function () {});
   ReloadEditor();
 }
 
@@ -145,17 +197,26 @@ function CloseGallery() {
 */
 function SaveAll() {
   var textStrings = $("#graphicalEditor").contents().find('*[data-cream-type]');
-  for (var i = 0; i < textStrings.length; i++)
-  {
-      console.log("POST request: id: " + textStrings[i].dataset.creamName + " value: " + textStrings[i].innerHTML);
-      $.post("./php/saveTextFile.php", {id : textStrings[i].dataset.creamName,
-                                        val: textStrings[i].innerHTML}, function(data) {
-        console.log(data);
-      });
+  for (var i = 0; i < textStrings.length; i++) {
+    console.log("POST request: id: " + textStrings[i].dataset.creamName + " value: " + textStrings[i].innerHTML);
+    $.post("./api/saveTextFile.php", {
+      id: textStrings[i].dataset.creamName,
+      val: textStrings[i].innerHTML
+    }, function (data) {
+      console.log(data);
+    });
   }
   ReloadEditor();
 }
 
 function ReloadEditor() {
   $("#graphicalEditor").attr('src', $("#graphicalEditor").attr('src'));
+}
+
+function ResetDefaults() {
+  console.log("[CREAM] Resetting defaults...");
+  $.post("./api/reset_cream_files.php", null, function (data) {
+    console.log(data);
+  });
+  window.location = window.location;
 }

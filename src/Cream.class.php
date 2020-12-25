@@ -10,12 +10,18 @@
 
 <?php
 //Required imports
-include("FileManager.class.php");
-include("enum/ETextTag.class.php");
+include_once("FileManager.class.php");
+include_once("JSONDB.class.php");
+include_once("CreamConfig.class.php");
+// Required enums
+include_once("enum/ETextTag.class.php");
+include_once("enum/ECreamStorageMode.class.php");
 
 class Cream {
   //The actual version of Cream
-  const CREAM_VER = "v0.2a";
+  const CREAM_VER = "v0.2.3a";
+  // Type of storage mode
+  const CREAM_STORAGE_MODE = ECreamStorageMode::FILE_MODE;
   /**
    * Returns current cream version
    */
@@ -30,13 +36,27 @@ class Cream {
    * @param ETextTag $tag_type The text type supported by Cream (p, h1, h2, span, etc...)
    */
   public function Text($id, $defaultValue) {
-    $FileManager = new FileManager;
     $text = "Update failed, Cream Error!";
-    if ($FileManager->CheckTextFileById($id)) {
-      $text = $FileManager->GetTextFileById($id);
-    } else {
-      $FileManager->SaveTextFileById($id, $defaultValue);
-      $text = $defaultValue;
+
+    switch($this::CREAM_STORAGE_MODE) {
+      case ECreamStorageMode::FILE_MODE:
+        $FileManager = new FileManager;
+        if ($FileManager->CheckTextFileById($id)) {
+          $text = $FileManager->GetTextFileById($id);
+        } else {
+          $FileManager->SaveTextFileById($id, $defaultValue);
+          $text = $defaultValue;
+        }
+        break;
+      case ECreamStorageMode::JSON_MODE:
+        $JSONDB = new JSONDB;
+        if ($JSONDB->CheckTextByID($id)) {
+          $text = $JSONDB->GetTextByID($id);
+        } else {
+          /** @todo add JSONDB save to file */
+        }
+        break;
+      /** @todo: Add MYSQL_MODE */
     }
     echo $text;
   }

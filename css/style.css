@@ -12,6 +12,114 @@
   --darker: #38220f;
 }
 
+/*==========================================
+ Wobbling Animation
+========================================== */
+@keyframes wobble {
+  33% {
+    transform: rotate(1deg);
+  }
+  66% {
+    transform: rotate(-1deg);
+  }
+}
+
+.wobble {
+  animation: wobble 0.25s ease-in-out infinite;
+}
+
+/*==========================================
+ UPLOAD STYLE
+========================================== */
+
+.uppy-DashboardAddFiles {
+  background-color: var(--medium);
+  color: var(--lighter);
+}
+
+.uppy-DashboardContent-bar {
+  background-color: var(--medium);
+  color: var(--lighter);
+}
+
+.uppy-DashboardContent-back {
+  color: var(--light) !important;
+}
+
+.uppy-DashboardContent-addMore {
+  color: var(--light) !important;
+}
+
+.uppy-Dashboard-dropFilesTitle {
+  color: var(--lighter) !important;
+}
+
+.uppy-Dashboard-browse {
+  color: var(--darker) !important;
+}
+
+.uppy-u-reset {
+  color: var(--darker) !important;
+}
+
+.uppy-Dashboard-poweredBy {
+  color: var(--darker) !important;
+}
+
+.uppy-Dashboard-innerWrap {
+  background-color: var(--medium) !important; 
+}
+
+.uppy-DashboardContent-bar {
+  background-color: var(--dark) !important;
+  border-bottom: none !important;
+}
+
+.uppy-DashboardItem {
+  border-bottom: none !important;
+}
+
+.uppy-DashboardItem-name {
+  color: var(--lighter) !important;
+}
+
+.uppy-DashboardItem-statusSize {
+  color: var(--light) !important;
+}
+
+.uppy-StatusBar-actions {
+  background-color: var(--dark) !important;
+  color: var(--lighter) !important;
+}
+
+.uppy-StatusBar.is-waiting .uppy-StatusBar-actionBtn--upload {
+  background-color: var(--darker) !important;
+  color: var(--lighter) !important;
+}
+
+.uppy-Dashboard-progressindicators * {
+  background-color: var(--darker) !important;
+  color: var(--lighter) !important;
+}
+
+/* ---------------------------------------------------
+    GALLERY STYLE
+----------------------------------------------------- */
+.image-delete {
+  background-color: var(--dark);
+  color: var(--light);
+  border-radius: 4px;
+  padding: 10px;
+  position: absolute;
+  top: -20px;
+  right: -5px;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 /* ---------------------------------------------------
     ROOT STYLE
 ----------------------------------------------------- */
@@ -210,8 +318,6 @@ a.article:hover {
   position: fixed;
   bottom: 0px;
   left: 0px;
-  width: 100%;
-  height: 0%;
 }
 
 #gallery .row {
@@ -229,7 +335,7 @@ a.article:hover {
 }
 
 #gallery-box {
-  overflow: scroll;
+  /* overflow: scroll; */
 }
 
 .spinner {

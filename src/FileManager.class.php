@@ -13,41 +13,17 @@
     */
     public function GetHtmlFiles()
     {
-      echo "Getting HTML files...";
+      //echo "Getting PHP files...";
       $files = array();
 
-      foreach (glob("../../*.*") as $filename) {
+      foreach (glob("../*.php") as $filename) {
         //Taking the last part only
         $exploded = explode("/", $filename);
         $filename = end($exploded);
-
-        //Chceking file extsnsion
-        if ($this->CheckFileExtension($filename))
-        {
-          array_push($files, $filename);
-        }
+        array_push($files, $filename);
       }
 
       return $files;
-    }
-
-    /*
-    -----------------------------------------------------------------------------
-    Check if the filename has a valid extension (.html, .php)
-    $filename: the filename to be checked
-    -----------------------------------------------------------------------------
-    */
-    private function CheckFileExtension($filename)
-    {
-      $comma_separated = explode(".", $filename);
-      $extension = end($comma_separated);
-
-      if ($extension == "html" or $extension == "php")
-      {
-          return true;
-      }
-
-      return false;
     }
 
     /*

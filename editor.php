@@ -65,6 +65,7 @@
 
     <!-- Custom text and image editor container -->
     <!-- Gallery -->
+    <!--
     <div id="gallery">
       <div class="container-fluid">
         <div class="row">
@@ -100,6 +101,7 @@
         <div class="rect5"></div>
       </div>
     </div>
+    -->
     <!-- Save/Close buttons -->
     <div id="editButtons" style="position: fixed; opacity:0.0;">
       <button type="btn btn-expand" name="button"><i class="fas fa-check"></i></button>

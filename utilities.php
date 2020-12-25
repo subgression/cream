@@ -54,9 +54,9 @@ if (isset($_GET['page'])) {
                             <input type="checkbox" class="form-check-input" id="cream-check-conversion">
                             <label class="form-check-label" for="cream-check-conversion">I've understood!</label>
                         </div>
-                        <button type="button" id="sidebarCollapse" class="btn btn-expand mt-5">
+                        <button type="button" id="sidebarCollapse" class="btn btn-expand mt-5" disabled>
                             <i class="fas fa-align-left"></i>
-                            <span>Convert Pages!!</span>
+                            <span class="ml-2"> Convert Pages!!</span>
                         </button>
                         <hr>
                     </div>
@@ -82,9 +82,9 @@ if (isset($_GET['page'])) {
                             <input type="checkbox" class="form-check-input" id="cream-check-conversion">
                             <label class="form-check-label" for="cream-check-conversion">I've understood!</label>
                         </div>
-                        <button type="button" id="sidebarCollapse" class="btn btn-expand mt-5">
+                        <button type="button" id="sidebarCollapse" class="btn btn-expand mt-5" disabled>
                             <i class="fas fa-align-left"></i>
-                            <span>Convert Assets!!</span>
+                            <span class="ml-2"> Convert Assets!!</span>
                         </button>
                         <hr>
                     </div>
@@ -94,9 +94,21 @@ if (isset($_GET['page'])) {
                         <p>
                             Analyze page content to check SEO score, find all the fix needed to have the perfect page!
                         </p>
-                        <button type="button" id="sidebarCollapse" class="btn btn-expand mt-5">
+                        <button type="button" id="sidebarCollapse" class="btn btn-expand mt-5" disabled>
                             <i class="fas fa-align-left"></i>
-                            <span>SEO Check</span>
+                            <span class="ml-2"> SEO Check</span>
+                        </button>
+                        <hr>
+                    </div>
+                    <!-- Reset to default -->
+                    <div class="col-lg-6">
+                        <h2 class="mb-4"> Reset to default </h2>
+                        <p>
+                            Reset all page content to default ones
+                        </p>
+                        <button type="button" id="sidebarCollapse" class="btn btn-expand mt-5" onclick="ResetDefaults()">
+                            <i class="fas fa-align-left"></i>
+                            <span class="ml-2"> Reset to default</span>
                         </button>
                         <hr>
                     </div>
