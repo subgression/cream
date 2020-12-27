@@ -19,7 +19,7 @@ include_once("enum/ECreamStorageMode.class.php");
 
 class Cream {
   //The actual version of Cream
-  const CREAM_VER = "v0.2.3a";
+  const CREAM_VER = "v0.2.4a";
   // Type of storage mode
   const CREAM_STORAGE_MODE = ECreamStorageMode::FILE_MODE;
   /**

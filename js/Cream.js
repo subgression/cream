@@ -104,18 +104,12 @@ function HandleClick(tag, event) {
   // Editing
   if (creamType == "image") {
     //Spawning the image gallery
-    console.log("Editing immagine");
-    currentCreamImage = tag;
-    $("#gallery").animate({
-      height: "100%"
-    }, 500, function () {
-      $("#gallery-box").text("");
-      $("#current-image").attr('src', $(tag).attr('src'));
-      $("#loading_spinner").css({
-        'display': 'inherit'
-      });
-      GetImages();
-    });
+    let creamGallerySelector = new CreamGallerySelector(
+      'gallerySelector', 
+      'gallerySelectorGalleryContainer',
+      'galleryEditorContainer',
+      tag
+      );
   }
 }
 
@@ -123,6 +117,7 @@ function HandleClick(tag, event) {
   Get all the images from the IMG_PATH configured in config.php
   this file can be configured from the user, the frontend or the backend developer easiliy
 */
+/*
 function GetImages() {
   console.log("Ottengo immagini");
   $.post('./api/get_images.php', {}, function (data) {
@@ -139,6 +134,7 @@ function GetImages() {
     });
   });
 }
+*/
 
 /**
  * Upload an Image inside Cream storage 
@@ -155,57 +151,35 @@ async function UploadImage(imageID, nameID) {
 }
 
 /**
- * Select the image, if the save button is clicked, store it in CreamImages
- */
-function SelectImage(img) {
-  let src = img.src;
-
-  $("#current-image").attr('src', src);
-
-  console.log(src);
-}
-
-/**
- * Save the current selected image from the gallery
- */
-function SaveImage() {
-  let _id = currentCreamImage.dataset.creamName;
-  let src = $("#current-image").attr('src');
-
-  $.post("./api/saveImageFile.php", {
-    id: _id,
-    val: src
-  }, function (data) {
-    console.log(data);
-  });
-  CloseGallery();
-}
-
-/**
-  Closes the gallery
-*/
-function CloseGallery() {
-  $("#gallery").animate({
-    height: "0%"
-  }, 500, function () {});
-  ReloadEditor();
-}
-
-/**
   Save all the tags into a single file stored in Cream* (CreamText, CreamImage, ecc...)
   @todo: Create database integration
 */
 function SaveAll() {
   var textStrings = $("#graphicalEditor").contents().find('*[data-cream-type]');
   for (var i = 0; i < textStrings.length; i++) {
-    console.log("POST request: id: " + textStrings[i].dataset.creamName + " value: " + textStrings[i].innerHTML);
-    $.post("./api/saveTextFile.php", {
-      id: textStrings[i].dataset.creamName,
-      val: textStrings[i].innerHTML
-    }, function (data) {
-      console.log(data);
-    });
+    console.log(textStrings[i].dataset.creamName);
+    switch(textStrings[i].dataset.creamType) {
+      case "text":
+        console.log("POST request: id: " + textStrings[i].dataset.creamName + " value: " + textStrings[i].innerHTML);
+        $.post("./api/saveTextFile.php", {
+          id: textStrings[i].dataset.creamName,
+          val: textStrings[i].innerHTML
+        }, function (data) {
+          console.log(data);
+        });
+        break;
+      case "image":
+        console.log(textStrings[i]);
+        $.post("./api/saveImageFile.php", {
+          id: textStrings[i].dataset.creamName,
+          val: textStrings[i].src
+        }, function (data) {
+          console.log(data);
+        });
+        break;
+    }
   }
+  debugger;
   ReloadEditor();
 }
 

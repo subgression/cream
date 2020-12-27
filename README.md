@@ -59,3 +59,6 @@ with:
 - Added config.json, where the user can config paths to image folders
 - Created Video Gallery Section
 - Added an Image Upload Section
+## V0.2.4
+- Added a new image selector
+- Extended Cream API

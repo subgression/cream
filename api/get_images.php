@@ -1,44 +1,31 @@
 <?php
-  require '../config.php';
-  $img_array = array();
-  foreach (glob(IMG_FILES . "*.jpg") as $image) {
-    //$relative_img = GetRelativePath(__FILE__, $image);
-    //$relative_img = substr($relative_img, 1);
-    $image = substr($image, 3);
-    array_push($img_array, $image);
+  include "../src/CreamLoader.php";
+  error_reporting(E_ALL);
+  ini_set('display_errors', 'on');
+  cream_loader();
+  
+  $name = null;
+  // Name of the folder to be loaded
+  if (isset($_GET['name'])) {
+      $name = $_GET['name'];
   }
-  echo json_encode($img_array);
-
-  function GetRelativePath($from, $to)
-  {
-    // some compatibility fixes for Windows paths
-    $from = is_dir($from) ? rtrim($from, '\/') . '/' : $from;
-    $to   = is_dir($to)   ? rtrim($to, '\/') . '/'   : $to;
-    $from = str_replace('\\', '/', $from);
-    $to   = str_replace('\\', '/', $to);
-
-    $from     = explode('/', $from);
-    $to       = explode('/', $to);
-    $relPath  = $to;
-
-    foreach($from as $depth => $dir) {
-        // find first non-matching dir
-        if($dir === $to[$depth]) {
-            // ignore this directory
-            array_shift($relPath);
-        } else {
-            // get number of remaining dirs to $from
-            $remaining = count($from) - $depth;
-            if($remaining > 1) {
-                // add traversals up to first matching dir
-                $padLength = (count($relPath) + $remaining - 1) * -1;
-                $relPath = array_pad($relPath, $padLength, '..');
-                break;
-            } else {
-                $relPath[0] = './' . $relPath[0];
-            }
-        }
-    }
-    return implode('/', $relPath);
+  if ($name == null) {
+    echo "Non va la POST";
+    return;
   }
+  
+  // ID of the gallery HTML element
+  $gallery_id = "main_gallery";
+  
+  $creamConfig = new CreamConfig;
+  $creamConfig->FetchConfig("../config.json");
+  $path = "../" .$creamConfig->GetImagePathByName($name);
+  // Getting paths for all images inside the folder
+  $paths = [];
+  foreach (glob($path . "*.{JPG,GIF,JPEG,PNG,jpg,gif,jpeg,png}", GLOB_BRACE) as $image) {
+      // Removing the first ../ since is only needed to calculate here
+      $image = substr($image, 3);
+      array_push($paths, $image);
+  }
+  echo json_encode($paths);
 ?>

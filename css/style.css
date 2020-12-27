@@ -29,8 +29,31 @@
 }
 
 /*==========================================
+ HIDE BAR
+========================================== */
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+*::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+* {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.editor::-webkit-scrollbar {
+  display: none;
+}
+
+/*==========================================
  UPLOAD STYLE
 ========================================== */
+
+.uppy-size--md .uppy-DashboardAddFiles {
+  border: none !important;
+}
 
 .uppy-DashboardAddFiles {
   background-color: var(--medium);
@@ -304,10 +327,18 @@ a.article:hover {
 /* ---------------------------------------------------
     EDIOR STYLES
 ----------------------------------------------------- */
+.editor-buttons {
+  position: fixed;
+  bottom: 45px;
+  right: 45px;
+  z-index: 3;
+}
+
 .editor {
   overflow-y: scroll;
   width: 100% !important;
   height: -webkit-fill-available;
+  border: none;
 }
 
 /* ---------------------------------------------------

@@ -28,9 +28,9 @@ class CreamGallery {
         target.style.justifyContent = "center";
         target.style.alignItems = "center";
         target.style.overflowY = "scroll";
-        target.style.maxHeight = "50vh";
+        target.style.maxHeight = "100vh";
         target.style.padding = "5px";
-        target.style.border = "1px dashed var(--dark)";
+        //target.style.border = "1px dashed var(--dark)";
 
         // Appending elements
         paths.forEach(path => {
@@ -48,6 +48,209 @@ class CreamGallery {
         for (let i = 0; i < this.creamGalleryElements.length; i++) {
             this.creamGalleryElements[i].showDeleteButtons();
         }
+    }
+}
+
+/*====================================
+CreamGallerySelector: Display the gallery selector
+It allows user to choose wich image folder they want
+as long as they're defined in the config.json
+=====================================*/
+class CreamGallerySelector {
+    // Main gallery selector container
+    gallerySelector = null;
+    // Gallery editor container
+    galleryEditorContainer = null;
+    // Gallery selector gallery container
+    gallerySelectorGalleryContainer = null;
+    // Current target img src
+    currentImageSrc = null;
+    // The image that will change
+    galleryTargetImageElement = null;
+    // Target image 
+    targetImage = null;
+    
+    /**
+     * Entry point
+     */
+    constructor(gallerySelectorID, gallerySelectorGalleryContainerID, galleryEditorContainerID, targetImage) {
+        this.gallerySelector = document.getElementById(gallerySelectorID);
+        this.gallerySelector.style.width = "100%";
+        this.gallerySelector.style.height = "100%";
+        this.gallerySelector.style.position = "fixed";
+        this.gallerySelector.style.zIndex = "99";
+        this.gallerySelector.style.top = "0px";
+        this.gallerySelector.style.left = "0px";
+        this.gallerySelector.style.backgroundColor = "var(--light)";
+        this.gallerySelector.style.visibility = "visible";
+
+        this.targetImage = targetImage;
+
+        this.createGalleryEditor(galleryEditorContainerID, gallerySelectorGalleryContainerID, targetImage.src);
+        this.createGalleryContainer(gallerySelectorGalleryContainerID, null);
+    }
+
+    /**
+     * Creates the gallery editor, allowing user to change src of the selected image
+     * @param {*} galleryEditorContainerID The gallery editor container ID
+     * @param {*} gallerySelectorGalleryContainerID Gallery container ID, that will change if user changes path
+     * @param {*} currentImageSrc Current image src, to be displayed
+     */
+    createGalleryEditor(galleryEditorContainerID, gallerySelectorGalleryContainerID, currentImageSrc) {
+        this.galleryEditorContainer = document.getElementById(galleryEditorContainerID);
+        this.galleryEditorContainer.style.padding = "25px";
+        this.galleryEditorContainer.style.backgroundColor = "var(--dark)";
+        this.galleryEditorContainer.style.color = "var(--light)";
+        this.galleryEditorContainer.style.height = "100vh";
+
+        let galleryEditorHeader = document.createElement('h2');
+        galleryEditorHeader.innerHTML = "Change Image";
+
+        this.galleryTargetImageElement = document.createElement('img');
+        this.galleryTargetImageElement.classList.add('img');
+        this.galleryTargetImageElement.classList.add('img-fluid');
+        this.galleryTargetImageElement.classList.add('rounded');
+        this.galleryTargetImageElement.style.marginTop = "25px";
+        this.galleryTargetImageElement.style.marginBottom = "25px";
+        this.galleryTargetImageElement.src = currentImageSrc;
+
+        let galleryEditorSelectorHelper = document.createElement('p');
+        galleryEditorSelectorHelper.innerHTML = "Choose Directory";
+
+        this.galleryEditorContainer.appendChild(galleryEditorHeader);
+        this.galleryEditorContainer.appendChild(this.galleryTargetImageElement);
+        this.galleryEditorContainer.appendChild(galleryEditorSelectorHelper);
+        this.createPathSelector(gallerySelectorGalleryContainerID);
+
+        // Creating Change/Close container and buttons
+        let galleryChangeCloseContainer = document.createElement('div');
+        galleryChangeCloseContainer.style.position = "absolute";
+        galleryChangeCloseContainer.style.bottom = "0px";
+        galleryChangeCloseContainer.style.display = "flex";
+        galleryChangeCloseContainer.style.flexDirection = "row";
+        galleryChangeCloseContainer.style.left = "0px";
+        galleryChangeCloseContainer.style.width = "100%";
+        galleryChangeCloseContainer.style.justifyContent = "center";
+        galleryChangeCloseContainer.style.paddingBottom = "15px";
+
+        let galleryCloseButton = document.createElement('button');
+        galleryCloseButton.classList.add("btn");
+        galleryCloseButton.classList.add("btn-main");
+        galleryCloseButton.style.marginLeft = "5px";
+        galleryCloseButton.style.marginRight = "5px";
+        galleryCloseButton.innerHTML = "Close";
+        galleryCloseButton.addEventListener('click', (e) => {
+            this.closeGallerySelector();
+        });
+
+
+        let galleryChangeButton = document.createElement('button');
+        galleryChangeButton.classList.add("btn");
+        galleryChangeButton.classList.add("btn-danger");
+        galleryChangeButton.style.marginLeft = "5px";
+        galleryChangeButton.style.marginRight = "5px";
+        galleryChangeButton.innerHTML = "Change";
+        galleryChangeButton.addEventListener('click', (e) => {
+            this.changeTargetImgSrc(this.galleryTargetImageElement.src);
+        });
+        
+        galleryChangeCloseContainer.appendChild(galleryCloseButton);
+        galleryChangeCloseContainer.appendChild(galleryChangeButton);
+        this.galleryEditorContainer.appendChild(galleryChangeCloseContainer);
+    }
+
+    /**
+     * Closes the gallery
+     */
+    closeGallerySelector() {
+        this.gallerySelector.style.visibility = "hidden";
+        this.galleryEditorContainer.innerHTML = '';
+    }
+
+    /**
+     * Change selected image src and than closes the gallery
+     * @param {*} src 
+     */
+    changeTargetImgSrc(src) {
+        this.targetImage.src = src;
+        this.closeGallerySelector(); 
+    }
+
+    /**
+     * Creates the gallery container
+     * @param {string} gallerySelectorGalleryContainerID The gallery container ID
+     * @param {*} targetPath Path JSON file containing the name and path of all cream paths
+     */
+    createGalleryContainer(gallerySelectorGalleryContainerID, targetPath = null) {
+        let container = document.getElementById(gallerySelectorGalleryContainerID);
+        container.style.padding = "25px";
+        let creamGallery = null;
+        container.innerHTML = '';
+        // If no target path has been used, use the first provided by API
+        if (targetPath == null) {
+            $.post("./api/get_image_paths.php", {}, (paths) => {
+                paths = JSON.parse(paths);
+                $.get("./api/get_images.php", {name: paths[0].name}, (images) => {
+                    creamGallery = new CreamGallery(images, gallerySelectorGalleryContainerID);
+
+                    // Additional styling for editor
+                    creamGallery.creamGalleryElements.forEach((galleryElement) => {
+                        galleryElement.image.style.maxWidth = "150px";
+                        galleryElement.image.style.maxHeight = "150px";
+                        galleryElement.image.addEventListener('click', (e) => {
+                            this.galleryTargetImageElement.src = galleryElement.image.src;
+                        })
+                    })
+                    let creamGalleryElement = document.getElementById(gallerySelectorGalleryContainerID);
+                    creamGalleryElement.style.maxHeight = "90vh";
+                });
+            });
+        }
+        // Else use the one provided as a paremeter
+        else {
+            console.log(targetPath);
+            $.get("./api/get_images.php", {name: targetPath}, (images) => {
+                creamGallery = new CreamGallery(images, gallerySelectorGalleryContainerID);
+
+                // Additional styling for editor
+                creamGallery.creamGalleryElements.forEach((galleryElement) => {
+                    galleryElement.image.style.maxWidth = "150px";
+                    galleryElement.image.style.maxHeight = "150px";
+                    galleryElement.image.addEventListener('click', (e) => {
+                        this.galleryTargetImageElement.src = galleryElement.image.src;
+                    })
+                })
+                let creamGalleryElement = document.getElementById(gallerySelectorGalleryContainerID);
+                creamGalleryElement.style.maxHeight = "90vh";
+            });
+        }
+    }
+
+    /**
+     * Gets all paths via Cream API and creates the selector
+     */
+    createPathSelector(gallerySelectorGalleryContainerID) {
+        $.post("./api/get_image_paths.php", {}, (data) => {
+            this.pathSelector = document.createElement('select');
+            this.pathSelector.classList.add("btn-main");
+            let i = 0;
+            data = JSON.parse(data);
+            data.forEach((path) => {
+                let pathSelectorOption = document.createElement('option');
+                pathSelectorOption.setAttribute('value', path.name);
+                if (i == 0) pathSelectorOption.selected = true;
+                pathSelectorOption.innerHTML = path.name;
+                this.pathSelector.appendChild(pathSelectorOption);
+                i++;
+            });
+            // adding event listener to change gallery location
+            this.pathSelector.addEventListener('change', (e) => {
+                console.log("[CreamImageSelector] Loading gallery for name " + e.target.value);
+                this.createGalleryContainer(gallerySelectorGalleryContainerID, e.target.value);
+            });
+
+            this.galleryEditorContainer.appendChild(this.pathSelector);
+        });
     }
 }
 
@@ -77,6 +280,7 @@ class CreamGalleryElement {
         let image = document.createElement('img');
         image.src = path;
         image.classList.add("img-fluid");
+        image.classList.add('rounded');
         image.style.margin = "25px";
         image.style.maxHeight = "250px";
         image.style.maxWidth = "250px";
@@ -127,8 +331,7 @@ class CreamGalleryElement {
             this.imageDelete.style.visibility = "visible";
             this.image.classList.add('wobble');
             this.imageDeleteShown = true;
-        }
-        else {
+        } else {
             this.imageDelete.style.visibility = "hidden";
             this.image.classList.remove('wobble');
             this.imageDeleteShown = false;
@@ -145,7 +348,7 @@ class CreamGalleryElement {
         if (document.getElementById(id) == null) {
             this.createWarningModal(path, id);
         }
-        $('#' + id).modal('toggle');        
+        $('#' + id).modal('toggle');
     }
 
     /**

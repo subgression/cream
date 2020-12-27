@@ -52,12 +52,6 @@ cream_loader();
 
     <?php cream_render_footer(); ?>
     <?php cream_import_scripts(); ?>
-
-    <script>
-        window.onload = function() {
-            GetImages();
-        }
-    </script>
 </body>
 
 </html>
