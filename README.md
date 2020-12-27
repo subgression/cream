@@ -25,6 +25,34 @@ Each page that use the Cream needs the following requirements:
 ```php
 <?php require "./cream/src/Cream.class.php"; ?>
 ```
+## Config.json
+This will be the main Config file, it will contain info about what path will store images, videos, and components (WIP), it will be easilty editable via Cream Manager, example:
+```json
+{
+    "creamImageFiles": [
+        {
+            "name" : "Pagina Iniziale",
+            "path" : "../img/"
+        },
+        {
+            "name" : "Prodotti",
+            "path" : "../img/products/"
+        },
+        {
+            "name" : "Macchine",
+            "path" : "../img/machines/"
+        },
+        {
+            "name" : "Bubbles",
+            "path" : "../img/bubbles/"
+        },
+        {
+            "name" : "Test Upload",
+            "path" : "../img/test/"
+        }
+    ]
+}
+```
 ## Text
 Simply replace any of the tag you need to allow edit from:
 ```html
