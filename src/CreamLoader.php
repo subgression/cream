@@ -7,6 +7,7 @@
         require_once("Debugger.php");
         // Including Cream Class
         require_once("Cream.class.php");
+        require_once("Stored.class.php");
         // Including all the UI components
         include_once("ui/sidebar.component.php");
         include_once("ui/footer.component.php");
@@ -15,5 +16,7 @@
         // Including script and link loader
         include_once("loaders/script_loader.php");
         include_once("loaders/link_loader.php");
+
+        
     }
 ?>

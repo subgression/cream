@@ -14,6 +14,7 @@
     <!-- Editor js -->
     <script src="js/Cream.js"></script>
     <script src="js/CreamGallery.js"></script>
+    <script src="js/CreamWizard.js"></script>
     <!-- Sidebar opener -->
     <script type="text/javascript">
         $(document).ready(function () {

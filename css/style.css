@@ -307,8 +307,8 @@ a.article:hover {
 }
 
 .btn-main {
-  background-color: var(--darker);
-  color: var(--lighter);
+  background-color: var(--darker) !important;  
+  color: var(--lighter) !important;
 }
 
 /* ---------------------------------------------------
@@ -322,6 +322,18 @@ a.article:hover {
 
 .login-icon {
   width: 150px;
+}
+
+/* ---------------------------------------------------
+    WIZARD CARD STYLES
+----------------------------------------------------- */
+.wizard-card {
+  background-color: var(--light) !important;
+}
+
+.wizard-card .card-body .card-img-top {
+  width: 150px !important;
+  max-width: 250px !important;
 }
 
 /* ---------------------------------------------------

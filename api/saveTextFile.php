@@ -1,13 +1,17 @@
 <?php
-  if (isset($_POST['id']) and isset($_POST['val'])) {
-    echo "Saving creamText with ID: " .$_POST['id'];
-    $id = $_POST['id'];
-    $value = $_POST['val'];
-    $idFile = fopen("../creamtext/" . $id, "w");
-    fwrite($idFile, $value);
-    fclose($idFile);
-  }
-  else {
-    echo "Cream ERROR: Malformed request";
-  }
+    include_once ("../src/Stored.class.php");
+    include_once ("../src/models/BasicResponse.model.php");
+
+	$stored = new Stored;
+	$stored->open();
+	if (!$stored->saveCreamText($_POST['id'], $_POST['val'])) {
+		$res = new BasicResponseModel(500, "Something went wrong :(");
+		$res->responde();
+		$stored->close();
+		return -1;
+	}
+    $stored->close();
+    
+    $res = new BasicResponseModel(200, "Image file saved successuflly");
+	$res->responde();
 ?>

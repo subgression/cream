@@ -90,3 +90,6 @@ with:
 ## V0.2.4
 - Added a new image selector
 - Extended Cream API
+## V0.3.0
+- Added MySQL integration
+- Created wizard to configure all the settings
