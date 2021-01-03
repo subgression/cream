@@ -13,8 +13,7 @@ if (isset($_GET['name'])) {
 // ID of the gallery HTML element
 $gallery_id = "main_gallery";
 
-$creamConfig = new CreamConfig;
-$creamConfig->FetchConfig("./config.json");
+$creamConfig = new CreamConfig();
 $path = $creamConfig->GetImagePathByName($name);
 // Getting paths for all images inside the folder
 $paths = [];

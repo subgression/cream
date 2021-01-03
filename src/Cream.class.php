@@ -10,25 +10,36 @@
 
 <?php
 //Required imports
-include_once("FileManager.class.php");
-include_once("JSONDB.class.php");
-include_once("CreamConfig.class.php");
-include_once("Stored.class.php");
+require_once("FileManager.class.php");
+require_once("JSONDB.class.php");
+require_once("CreamConfig.class.php");
+require_once("Stored.class.php");
+require_once("Debugger.php");
 // Required enums
-include_once("enum/ETextTag.class.php");
-include_once("enum/ECreamStorageMode.class.php");
+require_once("enum/ETextTag.class.php");
+require_once("enum/ECreamStorageMode.class.php");
 
 class Cream {
 	//The actual version of Cream
 	const CREAM_VER = "v0.3.0a";
-	// Type of storage mode
-	const CREAM_STORAGE_MODE = ECreamStorageMode::MYSQL_MODE;
+
+	private $creamStorageMode = ECreamStorageMode::MYSQL_MODE;
+
+	private $firstJSONsave = false;
+
+	function __construct() {
+		// Fetching config to detect what method is currently used to store data
+		$config = new CreamConfig;
+		$this->creamStorageMode = $config->GetStorageMode();
+	}
+	
 	/**
 	 * Returns current cream version
 	 */
 	public function GetCreamVersion() {
 		echo $this::CREAM_VER;
 	}
+
 	/**
 	 * Render a text, if the id is not present in the folder CreamText, simply place the
 	 * default value but save the id
@@ -39,7 +50,7 @@ class Cream {
 	public function Text($id, $defaultValue) {
 		$text = "Update failed, Cream Error!";
 
-		switch ($this::CREAM_STORAGE_MODE) {
+		switch ($this->creamStorageMode) {
 			case ECreamStorageMode::FILE_MODE:
 				$FileManager = new FileManager;
 				if ($FileManager->CheckTextFileById($id)) {
@@ -54,11 +65,12 @@ class Cream {
 				if ($JSONDB->CheckTextByID($id)) {
 					$text = $JSONDB->GetTextByID($id);
 				} else {
-					/** @todo add JSONDB save to file */
+					$JSONDB->SaveTextById($id, $defaultValue);
+					$text = $defaultValue;
 				}
 				break;
-				/** @todo: Add MYSQL_MODE */
 			case ECreamStorageMode::MYSQL_MODE:
+				if (!$this->firstJSONsave) return;
 				$stored = new Stored;
 				$stored->open();
 				if ($stored->creamTextExists($id) != -1) {
@@ -69,10 +81,12 @@ class Cream {
 					$text = $defaultValue;
 				}
 				$stored->close();
+				$this->firstJSONsave = true;
 				break;
 		}
 		echo $text;
 	}
+
 	/**
 	 * Renders the text accordingly to the ETextTag type
 	 * @param string $text The text to render
@@ -92,6 +106,7 @@ class Cream {
 				break;
 		}
 	}
+
 	/**
 	 * Render an image, if the id is not present in the folder CreamImage, simply place the
 	 * default value but save the id
@@ -100,7 +115,7 @@ class Cream {
 	 * @todo Add internal img tag handling
 	 */
 	public function Image($id, $defaultSrc) {
-		switch ($this::CREAM_STORAGE_MODE) {
+		switch ($this->creamStorageMode) {
 			case ECreamStorageMode::FILE_MODE:
 				$FileManager = new FileManager;
 				if ($FileManager->CheckImageFileById($id)) {
@@ -109,6 +124,16 @@ class Cream {
 					$FileManager->SaveImageFileById($id, $defaultSrc);
 					echo $defaultSrc;
 				}
+				break;
+			case ECreamStorageMode::JSON_MODE:
+				$JSONDB = new JSONDB;
+				if ($JSONDB->CheckImageByID($id)) {
+					$src = $JSONDB->GetImageByID($id);
+				} else {
+					$JSONDB->SaveImageById($id, $defaultSrc);
+					$src = $defaultSrc;
+				}
+				echo $src;
 				break;
 			case ECreamStorageMode::MYSQL_MODE:
 				$src = null;

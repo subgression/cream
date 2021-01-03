@@ -8,8 +8,7 @@ function cream_render_img_upload() {
     error_reporting(E_ALL);
     ini_set('display_errors', 'on');
 
-    $creamConfig = new CreamConfig;
-    $creamConfig->FetchConfig("./config.json");
+    $creamConfig = new CreamConfig();
     ob_start();
 ?>
     <div class="container py-5 text-center">

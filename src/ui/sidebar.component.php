@@ -59,8 +59,7 @@
                     <ul class="collapse list-unstyled" id="gallerySubmenu">
                         <?php
                             // Getting all image paths from Cream Config
-                            $cc = new CreamConfig;
-                            $cc->FetchConfig("./config.json");
+                            $cc = new CreamConfig();
                             $nodes = $cc->GetAllImagePaths();
                             foreach ($nodes as $imageNode): ?>
                                 <a href="./gallery.php?name=<?php echo $imageNode->name; ?>">
