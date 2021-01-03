@@ -1,2 +1,4 @@
 # Ignoring creamdb.json
 creamdb.json
+# Ignoring globals.glob
+globals.glob
