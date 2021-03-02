@@ -1,4 +1,6 @@
 <?php
+require_once("CreamTopping.class.php");
+require_once("utils/CreamLogger.utils.php");
 /*
   -----------------------------------------------------------------------------
   JSONDB.class.php
@@ -16,7 +18,7 @@ class JSONDB {
 	 */
 	public function SaveDB() {
 		if (($encoded = json_encode($this->db)) != null) {
-			$file = fopen(__DIR__ . "/../creamdb.json", "w");
+			$file = fopen(__DIR__ . "/../data/creamdb.json", "w");
 			fwrite($file, $encoded);
 			fclose($file);
 		}
@@ -30,19 +32,20 @@ class JSONDB {
 	 */
 	public function GetDB() {
 		// If the creamdb does not exist yet, create it
-		if (!file_exists(__DIR__ . "/../creamdb.json")) {
-			$newdb = fopen(__DIR__ . "/../creamdb.json", "w");
+		if (!file_exists(__DIR__ . "/../data/creamdb.json")) {
+			$newdb = fopen(__DIR__ . "/../data/creamdb.json", "w");
 
 			$emptyDB = new stdClass;
 			$emptyDB->creamText = [];
 			$emptyDB->creamImage = [];
+			$emptyDB->creamTopping = [];
 			fwrite($newdb, json_encode($emptyDB));
 
 			fclose($newdb);
 			return true;
 		}
 		else {
-			$contents = file_get_contents(__DIR__ . "/../creamdb.json");
+			$contents = file_get_contents(__DIR__ . "/../data/creamdb.json");
 			$this->db = json_decode($contents);
 			return true;
 		}
@@ -168,6 +171,62 @@ class JSONDB {
 		if (!$creamIDfound) {
 			array_push($this->db->creamImage, $creamImage);
 		}
+		$this->SaveDB();
+	}
+
+	/**
+	 * Check Topping by ID
+	 * @param $id The id to check
+	 * @return ( true | false )
+	 */
+	public function CheckToppingByID($id) {
+		$this->GetDB();
+		if ($this->db == null) return false;
+		if ($this->db->creamTopping == null) return false;
+
+		foreach ($this->db->creamTopping as $ct) {
+			if ($ct->template_name == $id) return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Returns the topping value from the JSONDB
+	 * @return CreamTopping The topping if found or null
+	 */
+	public function GetToppingByID($id) {
+		if ($this->db == null) {
+			$this->GetDB();
+			if ($this->db == null) {
+				echo "Cannot GET DB, fatal error!";
+				return false;
+			}
+		}
+		foreach ($this->db->creamTopping as $ct) {
+			if (strcmp($ct->template_name, $id) === 0) {
+				return CreamTopping::FromJSONDB($ct);
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * Saves the topping src inside the creamdb.json
+	 * @param CreamTopping $val the value of the cream topping (already encoded)
+	 */
+	public function SaveTopping($creamTopping) {
+		$this->GetDB();
+		$creamIDfound = false;
+		for ($i = 0; $i < count($this->db->creamTopping); $i++) {
+			if ($this->db->creamTopping[$i]->template_name == $creamTopping->template_name) {
+				$this->db->creamTopping[$i] = $creamTopping;
+				$creamIDfound = true;
+			}
+		}
+		if (!$creamIDfound) {
+			array_push($this->db->creamTopping, $creamTopping);
+		}
+
 		$this->SaveDB();
 	}
 }

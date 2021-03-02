@@ -2,6 +2,7 @@
 CreamGalleryElement: This component will create a gallery
 given an array of paths from API Backend
 =====================================*/
+
 class CreamGallery {
     creamGalleryElements = [];
 

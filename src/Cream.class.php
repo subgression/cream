@@ -15,6 +15,7 @@ require_once("JSONDB.class.php");
 require_once("CreamConfig.class.php");
 require_once("Stored.class.php");
 require_once("Debugger.php");
+require_once("CreamTopping.class.php");
 // Required enums
 require_once("enum/ETextTag.class.php");
 require_once("enum/ECreamStorageMode.class.php");
@@ -23,7 +24,7 @@ class Cream {
 	//The actual version of Cream
 	const CREAM_VER = "v0.3.0a";
 
-	private $creamStorageMode = ECreamStorageMode::MYSQL_MODE;
+	private $creamStorageMode = ECreamStorageMode::JSON_MODE;
 
 	private $firstJSONsave = false;
 
@@ -148,6 +149,33 @@ class Cream {
 				}
 				$stored->close();
 				echo $src;
+				break;
+		}
+	}
+
+	/**
+	 * Renders the topping by checking if values are existing in the various DB
+	 * otherwhise it will create the DB entry
+	 * @param strign $id the id of the topping
+	 */
+	public function Topping($id) {
+		//$topping = new CreamTopping($id);
+		$topping = null;
+
+		switch ($this->creamStorageMode) {
+			case ECreamStorageMode::FILE_MODE:
+				break;
+			case ECreamStorageMode::JSON_MODE:
+				$JSONDB = new JSONDB;
+				if ($JSONDB->CheckToppingByID($id)) {
+					$topping = $JSONDB->GetToppingByID($id);
+				} else {
+					$topping = new CreamTopping($id);
+					$JSONDB->SaveTopping($topping);
+				}
+				$topping->Build();
+				break;
+			case ECreamStorageMode::MYSQL_MODE:
 				break;
 		}
 	}

@@ -8,6 +8,8 @@
         // Including Cream Class
         require_once("Cream.class.php");
         require_once("Stored.class.php");
+        require_once("FileManager.class.php");
+        require_once("CreamTopping.class.php");
         // Including all the UI components
         include_once("ui/sidebar.component.php");
         include_once("ui/footer.component.php");

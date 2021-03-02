@@ -2,3 +2,9 @@
 creamdb.json
 # Ignoring globals.glob
 globals.glob
+# Ignoring all the logs
+/logs/*
+# Ignoring all the toppings
+/toppings/*
+# Ignoring all the data
+/data/*

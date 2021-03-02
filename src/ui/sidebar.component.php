@@ -31,27 +31,27 @@
                     <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fas fa-edit"></i> Page Editor</a>
                     <ul class="collapse list-unstyled" id="homeSubmenu">
                         <?php $fm = new FileManager; ?>
-                        <?php $files = $fm->GetHtmlFiles(); ?>
-                        <?php foreach ($files as $value): ?>
-                          <li>
-                              <a href="./editor.php?page=<?php echo $value; ?>">
-                                <i class="fas fa-file"></i> <?php echo $value; ?>
+                        <?php $pages = $fm->GetPages(); ?>
+                        <?php foreach ($pages as $page): ?>
+                            <li>
+                              <a href="./editor.php?page=<?php echo $page->src; ?>">
+                                <i class="fas fa-file"></i> <?php echo $page->name; ?>
                               </a>
-                          </li>
+                            </li>      
                         <?php endforeach; ?>
                     </ul>
                 </li>
                 <li>
                     <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fas fa-coffee"></i> Toppings</a>
                     <ul class="collapse list-unstyled" id="pageSubmenu">
-                        <li>
-                            <a href="#"><i class="fas fa-cookie-bite"></i> WIP </a>
-                            <!--
-                            <a href="#"><i class="fas fa-cookie-bite"></i> People</a>
-                            <a href="#"><i class="fas fa-cookie-bite"></i> Porfolio</a>
-                            <a href="#"><i class="fas fa-cookie-bite"></i> Guestbook</a>
-                            -->
-                        </li>
+                        <?php $toppings = $fm->GetToppings(); ?>
+                        <?php foreach ($toppings as $topping): ?>
+                            <li>
+                              <a href="./toppings.php?t=<?php echo $topping->template_name; ?>">
+                                <i class="fas fa-file"></i> <?php echo $topping->name; ?>
+                              </a>
+                            </li>      
+                        <?php endforeach; ?>
                     </ul>
                 </li>
                 <li>
